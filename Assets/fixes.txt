@@ -1,0 +1,14 @@
+Because of a Unity update, some of the particles in your project may not appear the same as what you see in the videos.  In particular, the shape landing effect and the row glow effect (Lectures 71-73) appear behind the corresponding squares in the Board. 
+
+Row Glows:
+
+In the Board  class ClearRowFX  method, change the z position of the rowGlow to be -1.1f instead of -1f, just to bring the effect a little bit in front of the squares.
+
+m_rowGlowFx[idx].transform.position = new Vector3 (0, y, -1.1f); 
+
+Shape Landing:
+
+For the shape landing effect,you will do something similar in the Shape  class LandShapeFX  method to shift the glow square a tenth of a unit (or something else small) in front of the landed shape itself:
+
+m_glowSquareFx[i].transform.position = child.position - new Vector3(0,0,0.1f);
+

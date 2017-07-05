@@ -179,7 +179,8 @@ public class GameController : MonoBehaviour {
 
         m_activeShape = m_spawner.SpawShape();
 
-        m_gameBoard.ClearAllRows();
+        //m_gameBoard.ClearAllRows();
+		m_gameBoard.StartCoroutine("ClearAllRows");
 
         PlaySound(m_soundManager.m_dropSound, 0.75f);
 

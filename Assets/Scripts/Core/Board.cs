@@ -5,6 +5,7 @@ using UnityEngine;
 public class Board : MonoBehaviour {
 
     public Transform m_emptySprite;
+	public ParticlePlayer[] m_rowGlowFx = new ParticlePlayer[4];
 
     public int m_height = 30;
     public int m_width = 10;
@@ -107,17 +108,25 @@ public class Board : MonoBehaviour {
         }
     }
 
-    public void ClearAllRows() {
+	public IEnumerator ClearAllRows() {
         m_completedRows = 0;
 
         for (int y = 0; y < m_height; y++) {
             if (IsComplete(y)) {
-                m_completedRows++;
-                ClearRow(y);
-                ShiftRowsDown(y + 1);
-                y--;
+				ClearRowFX(m_completedRows++, y);
             }
         }
+
+		yield return new WaitForSeconds(0.3f);
+
+		for (int y = 0; y < m_height; y++) {
+			if (IsComplete(y)) {
+				ClearRow(y);
+				ShiftRowsDown(y + 1);
+				yield return new WaitForSeconds(0.2f);
+				y--;
+			}
+		}
     }
 
     public bool IsOverLimit(Shape shape) {
@@ -129,4 +138,11 @@ public class Board : MonoBehaviour {
         }
         return isOverLimit;
     }
+
+	void ClearRowFX(int idx, int y){
+		if (m_rowGlowFx[idx]) {
+			m_rowGlowFx[idx].transform.position = new Vector3(0, y, -1.1f);
+			m_rowGlowFx[idx].Play();
+		}
+	}
 }

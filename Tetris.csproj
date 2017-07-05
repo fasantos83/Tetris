@@ -87,6 +87,7 @@
     <Compile Include="Assets\Scripts\Managers\ScoreManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SoundManager.cs" />
     <Compile Include="Assets\Scripts\Utility\IconToggle.cs" />
+    <Compile Include="Assets\Scripts\Utility\ParticlePlayer.cs" />
     <Compile Include="Assets\Scripts\Utility\ScreenFader.cs" />
     <Compile Include="Assets\Scripts\Utility\Vectorf.cs" />
   </ItemGroup>
