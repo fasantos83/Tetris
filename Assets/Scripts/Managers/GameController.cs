@@ -39,6 +39,8 @@ public class GameController : MonoBehaviour {
     public bool m_isPaused = false;
     public GameObject m_pausePanel;
     
+	public ParticlePlayer m_levelUpFx;
+	public ParticlePlayer m_gameOverFx;
 
     void Start() {
         m_gameBoard = FindObjectOfType<Board>();
@@ -153,14 +155,26 @@ public class GameController : MonoBehaviour {
     private void GameOver() {
         m_activeShape.MoveUp();
         Debug.LogWarning(m_activeShape.name + " is over the limit!");
-        if (m_gameOverPanel) {
-            m_gameOverPanel.SetActive(true);
-        }
+        
+		StartCoroutine(GameOverRoutine());
+
         PlaySound(m_soundManager.m_gameOverSound, 5f);
         PlaySound(m_soundManager.m_gameOverVocalClip, 5f);
-        m_gameOver = true;
+
+		m_gameOver = true;
     }
 
+	IEnumerator GameOverRoutine(){
+		if (m_gameOverFx) {
+			m_gameOverFx.Play();
+		}
+
+		yield return new WaitForSeconds(0.3f);
+
+		if (m_gameOverPanel) {
+			m_gameOverPanel.SetActive(true);
+		}
+	}
     private void LandShape() {
         m_timeToNextKeyLeftRight = Time.time;
         m_timeToNextKeyDown = Time.time;
@@ -169,6 +183,8 @@ public class GameController : MonoBehaviour {
         m_activeShape.MoveUp();
         m_gameBoard.StoreShapeInGrid(m_activeShape);
 
+		m_activeShape.LandShapeFX();
+
         if (m_ghost) {
             m_ghost.Reset();
         }
@@ -176,7 +192,7 @@ public class GameController : MonoBehaviour {
         if (m_holder) {
             m_holder.m_canRelease = true;
         }
-
+			
         m_activeShape = m_spawner.SpawShape();
 
         //m_gameBoard.ClearAllRows();
@@ -190,6 +206,10 @@ public class GameController : MonoBehaviour {
             if (m_scoreManager.m_didLevelUp) {
                 PlaySound(m_soundManager.m_levelUpVocalClip);
                 m_dropIntervalModded = Mathf.Clamp(m_dropInterval - (((float)m_scoreManager.m_level - 1) * 0.05f), 0.05f, 1f);
+
+				if (m_levelUpFx) {
+					m_levelUpFx.Play();
+				}
             } else {
                 if (m_gameBoard.m_completedRows > 1) {
                     PlaySound(m_soundManager.GetRandomClip(m_soundManager.m_vocalClips));
