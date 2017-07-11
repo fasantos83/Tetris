@@ -19,7 +19,7 @@ public class Shape : MonoBehaviour {
 		int i = 0;
 		foreach (Transform child in gameObject.transform) {
 			if (m_glowSquareFx[i]) {
-				m_glowSquareFx[i].transform.position = child.position;
+				m_glowSquareFx[i].transform.position = child.position - new Vector3(0, 0, 0.1f);
 
 				ParticlePlayer particlePlayer = m_glowSquareFx[i].GetComponent<ParticlePlayer>();
 				if (particlePlayer) {
